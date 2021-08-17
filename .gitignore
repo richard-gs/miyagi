@@ -31,3 +31,8 @@
 
 # "temporary" build files
 /target
+
+# custom
+.DS_Store
+ignore/
+
