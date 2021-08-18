@@ -4,12 +4,12 @@ import grails.plugins.*
 import org.grails.core.artefact.*
 
 model {
-	GrailsApplication grailsApplication	
-	GrailsPluginManager pluginManager
+    GrailsApplication grailsApplication
+    GrailsPluginManager pluginManager
 }
 
 json {
-	message "Welcome to Grails!"
+    message "Welcome to Grails!"
     environment Environment.current.name
     appversion grailsApplication.metadata.getApplicationVersion()
     grailsversion GrailsUtil.grailsVersion
@@ -27,7 +27,7 @@ json {
         logicalPropertyName c.logicalPropertyName
     }
     plugins pluginManager.allPlugins, { GrailsPlugin plugin ->
-    	name plugin.name
-    	version plugin.version
+        name plugin.name
+        version plugin.version
     }
 }
