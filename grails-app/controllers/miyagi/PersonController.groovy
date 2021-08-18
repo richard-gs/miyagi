@@ -7,18 +7,31 @@ class PersonController {
     static responseFormats = ['json']
 
     def index() {
-        log.trace "PRINT TRACE"
-        log.debug "PRINT DEBUG"
-        log.info "PRINT INFO"
-        log.warn "PRINT WARNING"
-        log.error "PRINT ERROR"
-        respond new Person(firstName:"Bob", lastName:"the Bulider")
+        log.info "Params: ${params.toString()}"
+        respond Person.list()
+    }
+
+    def show() {
+        respond Person.get(params.id)
     }
 
     def save() {
-        log.error "wow"
+        log.info params.toString()
         def u = new Person(firstName:"Darth", lastName:"Vader")
-        u.save()
+        u.save(flush: true, failOnError: true)
         respond u
+    }
+
+    // Test with:
+    // curl -i -X PUT -H "Content-Type: application/json" -d '{"name":"asdf"}' localhost:8080/person/6
+    def update() {
+        log.info "update() params: ${params.toString()} | request: ${request.JSON}"
+        respond(['ok'])
+    }
+
+    def delete() {
+        def p = Person.get(params.id);
+        p.delete(flush: true)
+        respond p
     }
 }
