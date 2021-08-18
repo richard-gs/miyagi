@@ -14,24 +14,16 @@ class PersonController {
         respond(Person.get(params.id))
     }
 
-    // def save() {
-    //     log.info "save() params: ${params.toString()} | request: ${request.JSON}"
-    //     // def p = new Person(firstName:"Darth", lastName:"Vader")
-    //     // p.save(flush: true, failOnError: true)
-    //     // respond(p)
-    //     respond(['ok'])
-    // }
-
-    // http://docs.grails.org/3.3.11/guide/theWebLayer.html#commandObjects
-    //  >> "Binding The Request Body To Command Objects"
-    // Test with (sad):
-    // curl -i -X POST -H "Content-Type: application/json" -d '{"name":"asdf", "firstName":"first!"}' localhost:8080/person
-    //  Test with (happy):
-    // curl -i -X POST -H "Content-Type: application/json" -d '{"name":"asdf", "firstName":"first!", "lastName":"last!"}' localhost:8080/person
+    /**
+     * http://docs.grails.org/3.3.11/guide/theWebLayer.html#commandObjects >> "Binding The Request Body To Command Objects"
+     *
+     * Test with (sad):
+     * curl -i -X POST -H "Content-Type: application/json" -d '{"name":"asdf", "firstName":"first!"}' localhost:8080/person
+     *
+     * Test with (happy):
+     * curl -i -X POST -H "Content-Type: application/json" -d '{"name":"asdf", "firstName":"first!", "lastName":"last!"}' localhost:8080/person
+     */
     def save(Person p) {
-        // log.info "save(Person) | person: ${p} | params: ${params.toString()} | request: ${request.JSON}"
-        // log.info "uhhh ${p.firstName} ... ${p.lastName}"
-
         // https://docs.grails.org/3.3.11/guide/validation.html#validatingConstraints
         if (p.validate()) {
             p.save(flush: true, failOnError: true)
