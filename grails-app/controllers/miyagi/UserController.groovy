@@ -17,6 +17,8 @@ class UserController {
 
     def save() {
         log.error "wow"
-        respond new User(firstName:"Darth", lastName:"Vader")
+        def u = new User(firstName:"Darth", lastName:"Vader")
+        u.save()
+        respond u
     }
 }
