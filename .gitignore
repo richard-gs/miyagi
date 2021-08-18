@@ -31,6 +31,10 @@
 
 # "temporary" build files
 /target
+/build
+
+# gradle
+/.gradle
 
 # custom
 .DS_Store
