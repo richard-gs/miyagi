@@ -3,6 +3,7 @@
 Run with `grails run-app`
 
 ## Troubleshooting
+---
 If you see 
 ```
 Execution failed for task ':findMainClass'.
@@ -11,3 +12,5 @@ Execution failed for task ':findMainClass'.
 
 Then run `./gradlew clean`
 
+---
+Don't name any tables "User"

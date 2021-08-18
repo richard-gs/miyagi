@@ -3,7 +3,7 @@ package miyagi
 import grails.rest.*
 import grails.converters.*
 
-class UserController {
+class PersonController {
     static responseFormats = ['json']
 
     def index() {
@@ -12,12 +12,12 @@ class UserController {
         log.info "PRINT INFO"
         log.warn "PRINT WARNING"
         log.error "PRINT ERROR"
-        respond new User(firstName:"Bob", lastName:"the Bulider")
+        respond new Person(firstName:"Bob", lastName:"the Bulider")
     }
 
     def save() {
         log.error "wow"
-        def u = new User(firstName:"Darth", lastName:"Vader")
+        def u = new Person(firstName:"Darth", lastName:"Vader")
         u.save()
         respond u
     }

@@ -1,6 +1,6 @@
 package miyagi
 
-class User {
+class Person {
 
     String firstName
     String lastName

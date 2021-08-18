@@ -3,7 +3,7 @@ package miyagi
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class UserSpec extends Specification implements DomainUnitTest<User> {
+class PersonSpec extends Specification implements DomainUnitTest<Person> {
 
     def setup() {
     }
