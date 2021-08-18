@@ -7,19 +7,39 @@ class PersonController {
     static responseFormats = ['json']
 
     def index() {
-        log.info "Params: ${params.toString()}"
-        respond Person.list()
+        respond(Person.list()) // http://docs.grails.org/3.3.11/guide/single.html#jsonResponses
     }
 
     def show() {
-        respond Person.get(params.id)
+        respond(Person.get(params.id))
     }
 
-    def save() {
-        log.info params.toString()
-        def u = new Person(firstName:"Darth", lastName:"Vader")
-        u.save(flush: true, failOnError: true)
-        respond u
+    // def save() {
+    //     log.info "save() params: ${params.toString()} | request: ${request.JSON}"
+    //     // def p = new Person(firstName:"Darth", lastName:"Vader")
+    //     // p.save(flush: true, failOnError: true)
+    //     // respond(p)
+    //     respond(['ok'])
+    // }
+
+    // http://docs.grails.org/3.3.11/guide/theWebLayer.html#commandObjects
+    //  >> "Binding The Request Body To Command Objects"
+    // Test with (sad):
+    // curl -i -X POST -H "Content-Type: application/json" -d '{"name":"asdf", "firstName":"first!"}' localhost:8080/person
+    //  Test with (happy):
+    // curl -i -X POST -H "Content-Type: application/json" -d '{"name":"asdf", "firstName":"first!", "lastName":"last!"}' localhost:8080/person
+    def save(Person p) {
+        // log.info "save(Person) | person: ${p} | params: ${params.toString()} | request: ${request.JSON}"
+        // log.info "uhhh ${p.firstName} ... ${p.lastName}"
+
+        // https://docs.grails.org/3.3.11/guide/validation.html#validatingConstraints
+        if (p.validate()) {
+            p.save(flush: true, failOnError: true)
+            respond(['ok': p])
+        } else {
+            log.warn p.errors.toString()
+            response.sendError(400); // https://stackoverflow.com/questions/1429388/how-can-i-return-a-404-50x-status-code-from-a-grails-controller
+        }
     }
 
     // Test with:
@@ -32,6 +52,8 @@ class PersonController {
     def delete() {
         def p = Person.get(params.id);
         p.delete(flush: true)
-        respond p
+        respond(p)
     }
 }
+
+// http://docs.grails.org/3.3.11/guide/theWebLayer.html#dataBinding >> "Binding Request Data to the Model"

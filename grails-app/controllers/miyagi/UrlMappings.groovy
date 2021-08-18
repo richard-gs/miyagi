@@ -1,5 +1,6 @@
 package miyagi
 
+// http://docs.grails.org/3.3.11/guide/theWebLayer.html#urlmappings
 class UrlMappings {
 
     static mappings = {
