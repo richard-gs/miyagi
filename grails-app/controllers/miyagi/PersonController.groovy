@@ -27,8 +27,10 @@ class PersonController {
         saveUpdate(p)
     }
 
-    // Test with:
-    // curl -i -X PUT -H "Content-Type: application/json" -d '{"name":"asdf"}' localhost:8080/person/6
+    /**
+     * Test with:
+     * curl -i -X PUT -H "Content-Type: application/json" -d '{"name":"asdf"}' localhost:8080/person/6
+     */
     def update(Person newPerson) {
         Person existingPerson = Person.get(params.id)
         if (!existingPerson) {

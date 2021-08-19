@@ -33,9 +33,10 @@
 /target
 /build
 
-# gradle, intellij
+# gradle, intellij, node_modules
 /.gradle
 /.idea
+/node_modules
 
 # custom
 .DS_Store
