@@ -1,0 +1,71 @@
+<md-dialog aria-label="Add A Person">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>Add A Person</h2>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="cancel()">
+				<md-icon aria-label="Close" class="material-icons">close</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<md-dialog-content layout-padding>
+		<form name="userForm">
+			<div layout-gt-sm="row">
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>First name</label>
+					<input ng-model="user.firstName">
+				</md-input-container>
+
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Last Name</label>
+					<input ng-model="user.lastName">
+				</md-input-container>
+			</div>
+
+			<md-input-container class="md-block">
+				<label>Address</label>
+				<input ng-model="user.address">
+			</md-input-container>
+
+			<div layout-gt-sm="row">
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>City</label>
+					<input ng-model="user.city">
+				</md-input-container>
+
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>State</label>
+					<md-select ng-model="user.state">
+						<md-option ng-repeat="state in states">{{state}}</md-option>
+					</md-select>
+				</md-input-container>
+
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Zip Code</label>
+					<input name="zipCode" ng-model="user.zipCode" placeholder="12345"
+						required ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
+
+					<!-- <div ng-messages="userForm.postalCode.$error" role="alert" multiple>
+						<div ng-message="required" class="my-message">You must supply a postal code.</div>
+						<div ng-message="pattern" class="my-message">That doesn't look like a valid postal
+							code.
+						</div>
+						<div ng-message="md-maxlength" class="my-message">
+							Don't use the long version silly...we don't need to be that specific...
+						</div>
+					</div> -->
+				</md-input-container>
+			</div>
+		</form>
+	</md-dialog-content>
+
+	<md-dialog-actions layout="row">
+		<span flex></span>
+		<md-button ng-click="cancel()">
+			Cancel
+		</md-button>
+		<md-button ng-click="hide()" md-autofocus>
+			Add
+		</md-button>
+	</md-dialog-actions>
+</md-dialog>
