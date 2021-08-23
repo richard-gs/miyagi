@@ -21,6 +21,29 @@
 				</md-input-container>
 			</div>
 
+			<div layout-gt-sm="row">
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Month</label>
+					<!-- <input ng-model="user.month"> -->
+					<md-select ng-model="user.month">
+						<md-option ng-repeat="month in months" ng-value="$index">{{ month }}</md-option>
+					</md-select>
+				</md-input-container>
+
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Day</label>
+					<!-- <input ng-model="user.day"> -->
+					<md-select ng-model="user.day">
+						<md-option ng-repeat="day in days" ng-value="day">{{ day }}</md-option>
+					</md-select>
+				</md-input-container>
+
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Year</label>
+					<input ng-model="user.year">
+				</md-input-container>
+			</div>
+
 			<md-input-container class="md-block">
 				<label>Address</label>
 				<input ng-model="user.address.street">
@@ -35,7 +58,7 @@
 				<md-input-container class="md-block" flex-gt-sm>
 					<label>State</label>
 					<md-select ng-model="user.address.state">
-						<md-option ng-repeat="state in states">{{state}}</md-option>
+						<md-option ng-repeat="state in states" ng-value="state">{{state}}</md-option>
 					</md-select>
 				</md-input-container>
 

@@ -39,13 +39,13 @@
 		
 		</div>
 		<table class="bordered">
-			<tr>
+			<tr height="100px">
 				<td colspan="10" style="background-color: #e2e5f5;">
 					<div style="text-align: center;">
 						<h3>Metrics</h3>
 						<table style="margin: auto;">
 							<tr>
-								<td ng-repeat="month in months">0</td>
+								<td ng-repeat="freq in monthFreq track by $index">{{ freq }}</td>
 							</tr>
 							<tr>
 								<td ng-repeat="month in months">{{ month }}</td>
@@ -54,30 +54,30 @@
 					</div>
 				</td>
 			</tr>
-				<tr style="font-weight: bold;">
-					<td>First Name</td>
-					<td>Last Name</td>
-					<td>Date of Birth</td>
-					<td>Street</td>
-					<td>City</td>
-					<td>State</td>
-					<td>Zip</td>
-					<td>Lat</td>
-					<td>Lon</td>
-					<td>Distance to Goodshuffle</td>
-				</tr>
-				<tr ng-repeat="person in people">
-					<td>{{ person.firstName }}</td>
-					<td>{{ person.lastName }}</td>
-					<td>{{ person.dob | date }}</td>
-					<td>{{ person.street }}</td>
-					<td>{{ person.city }}</td>
-					<td>{{ person.state }}</td>
-					<td>{{ person.zip }}</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
+			<tr height="100px" style="font-weight: bold;">
+				<td>First Name</td>
+				<td>Last Name</td>
+				<td>Date of Birth</td>
+				<td>Street</td>
+				<td>City</td>
+				<td>State</td>
+				<td>Zip</td>
+				<td>Lat</td>
+				<td>Lon</td>
+				<td>Distance to Goodshuffle</td>
+			</tr>
+			<tr ng-repeat="person in people">
+				<td>{{ person.firstName }}</td>
+				<td>{{ person.lastName }}</td>
+				<td>{{ person.dob | date }}</td>
+				<td>{{ person.street }}</td>
+				<td>{{ person.city }}</td>
+				<td>{{ person.state }}</td>
+				<td>{{ person.zip }}</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
 		</table>
 	</div>
 	<div layout="row" layout-align="center" ng-show="people.length <= 0" class="message">

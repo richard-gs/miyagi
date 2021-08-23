@@ -85,6 +85,15 @@ class PersonController {
         p.delete(flush: true)
         respond(p)
     }
+
+    // def groupBy() {
+    //     Person.createCriteria().list {
+    //         projections {
+    //             sqlGroupProjection 
+    //         }
+    //     }
+    //     sqlGroupProjection
+    // }
 }
 
 // http://docs.grails.org/3.3.11/guide/theWebLayer.html#dataBinding >> "Binding Request Data to the Model"
