@@ -3,7 +3,7 @@
 		<h1>Miyagi Project</h1>
 	</div>
 	
-	<div layout="row" layout-align="center">
+	<div layout="row" layout-align="center" ng-show="people.length > 0">
 		<table>
 			<thead>
 				<tr>
@@ -27,6 +27,10 @@
 			</tbody>
 		</table>
 	</div>
+	<div layout="row" layout-align="center" ng-show="people.length <= 0" class="message">
+		no people entered yet
+	</div>
+
 
 	<div layout="row" layout-wrap layout-margin layout-align="center">
 		<md-button class="md-primary md-raised" ng-click="showAdvanced($event)">
