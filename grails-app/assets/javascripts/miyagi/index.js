@@ -1,11 +1,9 @@
 //= wrapped
-//= require /angular/angular
-//= require /angular/angular-route
 //= require_self
 //= require PersonController
 
 (() => {
-    let app = angular.module('miyagiApp', ['ngRoute']);
+    let app = angular.module('miyagiApp', ['ngRoute', 'ngMaterial']);
 
     app.config(($routeProvider) => {
         $routeProvider
