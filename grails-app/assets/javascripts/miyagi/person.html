@@ -1,15 +1,36 @@
-<div>
-	<div class="md-padding" id="popupContainer" ng-cloak>
-		<p class="inset">
-			Miyagi Project
-		</p>
+<div class="md-padding">
+	<div layout="row" layout-align="center">
+		<h1>Miyagi Project</h1>
+	</div>
 	
-		<div class="dialog-demo-content" layout="row" layout-wrap layout-margin layout-align="center">
-			<md-button class="md-primary md-raised" ng-click="showAdvanced($event)"  >
-				Dialog
-			</md-button>
-		</div>
+	<div layout="row" layout-align="center">
+		<table>
+			<thead>
+				<tr>
+					<td>First Name</td>
+					<td>Last Name</td>
+					<td>Street</td>
+					<td>City</td>
+					<td>State</td>
+					<td>Zip</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="person in people">
+					<td>{{ person.firstName }}</td>
+					<td>{{ person.lastName }}</td>
+					<td>{{ person.street }}</td>
+					<td>{{ person.city }}</td>
+					<td>{{ person.state }}</td>
+					<td>{{ person.zip }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div layout="row" layout-wrap layout-margin layout-align="center">
+		<md-button class="md-primary md-raised" ng-click="showAdvanced($event)">
+			Add A Person
+		</md-button>
 	</div>
 </div>
-
-

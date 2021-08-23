@@ -13,6 +13,8 @@ let DialogController = function($scope, $mdDialog) {
 }
 
 let PersonController = function($scope, $mdDialog, $mdToast, $http) {
+	$scope.people = [];
+
 	function showToast(message) {
 		$mdToast.show(
 			$mdToast.simple()
@@ -40,6 +42,18 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 			showToast('Failed');
 		});
 	};
+
+	function loadPeople() {
+		$http.get('person')
+			.then(response => {
+				$scope.people = response.data;
+				console.log(response);
+			}, () => {
+				console.error(response);
+			});
+	}
+
+	loadPeople();
 }
 
 angular.module('miyagiApp').controller('PersonController', PersonController);

@@ -7,7 +7,7 @@
 			display: none !important;
 		}
 	</style>
-	<%-- <asset:stylesheet src="application.css"/> --%>
+	<asset:stylesheet src="application.css"/>
 
 	<!-- Angular Material CSS now available via Google CDN; version 1.2.1 used here -->
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.1/angular-material.min.css">
@@ -16,7 +16,6 @@
 </body>
 </head>
 <body>
-	<p>TITLE</p>
 	<ng-view></ng-view>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
