@@ -4,27 +4,80 @@
 	</div>
 	
 	<div layout="row" layout-align="center" ng-show="people.length > 0">
-		<table>
-			<thead>
-				<tr>
+		<div style="border: 1px solid black;">
+			<md-toolbar>
+				<div class="md-toolbar-tools">
+					<h2>Filters</h2>
+				</div>
+			</md-toolbar>
+			<md-dialog-content layout-padding>
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block" flex-gt-sm>
+						<label>Name</label>
+						<input ng-model="filter.name">
+					</md-input-container>
+				</div>
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block">
+						<label>Start Date</label>
+						<input ng-model="filter.startDate">
+					</md-input-container>
+				</div>
+				<div layout-gt-sm="row">
+					<md-input-container class="md-block">
+						<label>End Date</label>
+						<input ng-model="filter.endDate">
+					</md-input-container>
+				</div>
+			</md-dialog-content>
+		
+			<md-dialog-actions layout="row">
+				<md-button ng-click="" md-autofocus>
+					Submit
+				</md-button>
+			</md-dialog-actions>
+		
+		</div>
+		<table class="bordered">
+			<tr>
+				<td colspan="10" style="background-color: #e2e5f5;">
+					<div style="text-align: center;">
+						<h3>Metrics</h3>
+						<table style="margin: auto;">
+							<tr>
+								<td ng-repeat="month in months">0</td>
+							</tr>
+							<tr>
+								<td ng-repeat="month in months">{{ month }}</td>
+							</tr>
+						</table>
+					</div>
+				</td>
+			</tr>
+				<tr style="font-weight: bold;">
 					<td>First Name</td>
 					<td>Last Name</td>
+					<td>Date of Birth</td>
 					<td>Street</td>
 					<td>City</td>
 					<td>State</td>
 					<td>Zip</td>
+					<td>Lat</td>
+					<td>Lon</td>
+					<td>Distance to Goodshuffle</td>
 				</tr>
-			</thead>
-			<tbody>
 				<tr ng-repeat="person in people">
 					<td>{{ person.firstName }}</td>
 					<td>{{ person.lastName }}</td>
+					<td>{{ person.dob | date }}</td>
 					<td>{{ person.street }}</td>
 					<td>{{ person.city }}</td>
 					<td>{{ person.state }}</td>
 					<td>{{ person.zip }}</td>
+					<td></td>
+					<td></td>
+					<td></td>
 				</tr>
-			</tbody>
 		</table>
 	</div>
 	<div layout="row" layout-align="center" ng-show="people.length <= 0" class="message">

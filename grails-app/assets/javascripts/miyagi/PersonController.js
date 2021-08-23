@@ -14,6 +14,7 @@ let DialogController = function($scope, $mdDialog) {
 
 let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 	$scope.people = [];
+	$scope.months = ['Jan', 'Feb', 'Mar', 'Apr',  'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 	function showToast(message) {
 		$mdToast.show(
@@ -35,6 +36,7 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 			$http.post('person', person)
 			.then(response => {
 				showToast('Successfully added person!');
+				loadPeople();
 			}, () => {
 				showToast('Failed to add person.');
 			});

@@ -13,6 +13,7 @@ class PersonController {
             id:        p.id,
             firstName: p.firstName,
             lastName:  p.lastName,
+            dob:       p.dob,
         ]
         if (p.address) {
             person.street = p.address.street;
@@ -47,7 +48,7 @@ class PersonController {
      * curl -i -X POST -H "Content-Type: application/json" -d '{"name":"asdf", "firstName":"first!"}' localhost:8080/person
      *
      * Test with (happy):
-     * curl -i -X POST -H "Content-Type: application/json" -d '{"firstName":"another", "lastName":"person", "address": {"street":"123 fake st", "city":"anytown", "state":"md", "zip":"12345"}}' localhost:8080/person
+     * curl -i -X POST -H "Content-Type: application/json" -d '{"firstName":"another", "lastName":"person", "dob":"1993-03-24", "address": {"street":"123 fake st", "city":"anytown", "state":"md", "zip":"12345"}}' localhost:8080/person
      */
     def save(Person p) {
         log.info p.toString()
