@@ -24,25 +24,25 @@
 
 			<md-input-container class="md-block">
 				<label>Address</label>
-				<input ng-model="user.address">
+				<input ng-model="user.address.street">
 			</md-input-container>
 
 			<div layout-gt-sm="row">
 				<md-input-container class="md-block" flex-gt-sm>
 					<label>City</label>
-					<input ng-model="user.city">
+					<input ng-model="user.address.city">
 				</md-input-container>
 
 				<md-input-container class="md-block" flex-gt-sm>
 					<label>State</label>
-					<md-select ng-model="user.state">
+					<md-select ng-model="user.address.state">
 						<md-option ng-repeat="state in states">{{state}}</md-option>
 					</md-select>
 				</md-input-container>
 
 				<md-input-container class="md-block" flex-gt-sm>
 					<label>Zip Code</label>
-					<input name="zipCode" ng-model="user.zipCode" placeholder="12345"
+					<input name="zipCode" ng-model="user.address.zip" placeholder="12345"
 						required ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
 
 					<!-- <div ng-messages="userForm.postalCode.$error" role="alert" multiple>

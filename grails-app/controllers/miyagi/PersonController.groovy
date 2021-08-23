@@ -2,16 +2,42 @@ package miyagi
 
 import grails.rest.*
 import grails.converters.*
+import org.hibernate.FetchMode
 
 class PersonController {
     static responseFormats = ['json']
 
+    def personToResponse(Person p) {
+        if (!p) { return }
+        def person = [
+            id:        p.id,
+            firstName: p.firstName,
+            lastName:  p.lastName,
+        ]
+        if (p.address) {
+            person.street = p.address.street;
+            person.city   = p.address.city;
+            person.state  = p.address.state;
+            person.zip    = p.address.zip;
+        }
+        return person
+    }
+
     def index() {
-        respond(Person.list()) // http://docs.grails.org/3.3.11/guide/single.html#jsonResponses
+        def response = []
+
+        Person.list().each { p ->
+            def person = personToResponse(p)
+            response.push(person)
+        }
+        
+        respond(response) // http://docs.grails.org/3.3.11/guide/single.html#jsonResponses
     }
 
     def show() {
-        respond(Person.get(params.id))
+        Person p = Person.get(params.id)
+        def response = personToResponse(p)
+        respond(response)
     }
 
     /**
@@ -21,9 +47,10 @@ class PersonController {
      * curl -i -X POST -H "Content-Type: application/json" -d '{"name":"asdf", "firstName":"first!"}' localhost:8080/person
      *
      * Test with (happy):
-     * curl -i -X POST -H "Content-Type: application/json" -d '{"name":"asdf", "firstName":"first!", "lastName":"last!"}' localhost:8080/person
+     * curl -i -X POST -H "Content-Type: application/json" -d '{"firstName":"another", "lastName":"person", "address": {"street":"123 fake st", "city":"anytown", "state":"md", "zip":"12345"}}' localhost:8080/person
      */
     def save(Person p) {
+        log.info p.toString()
         saveUpdate(p)
     }
 
@@ -41,11 +68,13 @@ class PersonController {
     }
 
     def saveUpdate(Person p) {
-        if (p.validate()) { // https://docs.grails.org/3.3.11/guide/validation.html#validatingConstraints
+        // https://docs.grails.org/3.3.11/guide/validation.html#validatingConstraints
+        // https://docs.grails.org/3.3.11/ref/Domain%20Classes/save.html (auto validates on save)
+        try {
             p.save(flush: true, failOnError: true)
             respond(['ok': p])
-        } else {
-            log.warn p.errors.toString()
+        } catch(grails.validation.ValidationException e) {
+            log.error e.toString()
             response.sendError(400) // https://stackoverflow.com/questions/1429388/how-can-i-return-a-404-50x-status-code-from-a-grails-controller
         }
     }
