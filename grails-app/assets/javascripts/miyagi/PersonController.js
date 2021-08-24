@@ -35,7 +35,7 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 		);
 	}
 	
-	$scope.showAdvanced = function(event) {
+	$scope.addPerson = function(event) {
 		$mdDialog.show({
 			controller: DialogController,
 			templateUrl: 'assets/miyagi/personDialog.html',
@@ -52,7 +52,7 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 				showToast('Failed to add person.');
 			});
 		}, () => {
-			showToast('Failed');
+			// showToast('Failed');
 		});
 	};
 
@@ -79,6 +79,33 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 
 	function resetMonthFreq() {
 		$scope.monthFreq = [0,0,0,0,0,0,0,0,0,0,0,0];
+	}
+
+	$scope.search = function() {
+		$http.get('person/search', {
+			params: {
+				name:      $scope.filter.name,
+				startDate: jsDateToShortDate($scope.filter.startDate),
+				endDate:   jsDateToShortDate($scope.filter.endDate)
+			}
+		}).then(response => {
+			$scope.people = response.data;
+			console.log(response);
+		}, () => {
+			console.error(response);
+		});
+	}
+
+	function jsDateToShortDate(d) {
+		if (!d) { return d; }
+		return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
+	}
+
+	$scope.reset = function() {
+		$scope.filter.name = '';
+		$scope.filter.startDate = '';
+		$scope.filter.endDate = '';
+		loadPeople();
 	}
 
 	loadPeople();

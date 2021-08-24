@@ -11,6 +11,9 @@ class UrlMappings {
         put    "/$controller/$id(.$format)?"(action:"update")
         patch  "/$controller/$id(.$format)?"(action:"patch")
 
+        get    "/$controller/search"(action:"search")
+        // get "/$controller/$action"(action:)
+
         "/"(view: '/index')
         "500"(view: '/error')
         "404"(view: '/notFound')
