@@ -86,36 +86,28 @@ class PersonController {
         respond(p)
     }
 
+    /**
+     * Test with: curl "localhost:8080/person/search?name=james"
+     */
     def search() {
-        log.info "SEARCH!!!"
-        log.info params.name
-        log.info params.startDate
-        log.info params.endDate
         if (!params.name?.trim()) {
             params.name = "%"
         }
         if (!params.startDate?.trim()) {
-            Calendar cal = Calendar.getInstance(); /// 
-            cal.set(1, 1, 1);                      /// This is why java sucks
-            params.startDate = cal.getTime();      /// 
+            Calendar cal = Calendar.getInstance(); 
+            cal.set(1, 1, 1);                      
+            params.startDate = cal.getTime();      
         } else {
             params.startDate = Date.parse("yyyy-MM-dd", params.startDate)
         }
         if (!params.endDate?.trim()) {
-            Calendar cal = Calendar.getInstance(); /// 
-            cal.set(3000, 1, 1);                   /// This is why java sucks
-            params.endDate = cal.getTime();        /// 
+            Calendar cal = Calendar.getInstance(); 
+            cal.set(3000, 1, 1);                   
+            params.endDate = cal.getTime();        
         } else {
             params.endDate = Date.parse("yyyy-MM-dd", params.endDate)
         }
-        log.info "---"
-        log.info  params.name
-        log.info params.startDate.toString()
-        log.info params.endDate.toString()
-        // Person.findAllByFirstNameLikeOrLastNameLike
-        // def results = Person.findAll {
-        //     (firstName =~ params.name || lastName =~ params.name) && (params.startDate < dob) && (params.endDate > dob)
-        // }
+
         def results = Person.createCriteria().list {
             or {
                 ilike("firstName", "%$params.name%")
@@ -123,7 +115,6 @@ class PersonController {
             }
             between("dob", params.startDate, params.endDate)
         }
-        // respond(results)
 
         def response = []
         results.each { p ->
@@ -132,15 +123,6 @@ class PersonController {
         }
         respond(response)
     }
-
-    // def groupBy() {
-    //     Person.createCriteria().list {
-    //         projections {
-    //             sqlGroupProjection 
-    //         }
-    //     }
-    //     sqlGroupProjection
-    // }
 }
 
 // http://docs.grails.org/3.3.11/guide/theWebLayer.html#dataBinding >> "Binding Request Data to the Model"

@@ -50,9 +50,8 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 				loadPeople();
 			}, () => {
 				showToast('Failed to add person.');
+				console.error(response);
 			});
-		}, () => {
-			// showToast('Failed');
 		});
 	};
 
