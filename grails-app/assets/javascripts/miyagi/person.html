@@ -3,7 +3,7 @@
 		<h1>Miyagi Project</h1>
 	</div>
 	
-	<div layout="row" layout-align="center" ng-show="people.length > 0">
+	<div layout="row" layout-align="center">
 		<div style="border: 1px solid black; width: 275px;">
 			<md-toolbar>
 				<div class="md-toolbar-tools">
@@ -66,7 +66,7 @@
 				<td>Lon</td>
 				<td>Distance to Goodshuffle</td>
 			</tr>
-			<tr ng-repeat="person in people">
+			<tr ng-repeat="person in people" ng-show="people.length > 0">
 				<td>{{ person.firstName }}</td>
 				<td>{{ person.lastName }}</td>
 				<td>{{ person.dob | date }}</td>
@@ -78,12 +78,11 @@
 				<td></td>
 				<td></td>
 			</tr>
+			<tr ng-show="people.length <= 0" class="message">
+				<td colspan="10" class="message" style="text-align: center;">no people to display</td>
+			</tr>
 		</table>
 	</div>
-	<div layout="row" layout-align="center" ng-show="people.length <= 0" class="message">
-		no people entered yet
-	</div>
-
 
 	<div layout="row" layout-wrap layout-margin layout-align="center">
 		<md-button class="md-primary md-raised" ng-click="addPerson($event)">
