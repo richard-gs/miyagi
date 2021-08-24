@@ -26,7 +26,7 @@
 					<label>Month</label>
 					<!-- <input ng-model="user.month"> -->
 					<md-select ng-model="user.month">
-						<md-option ng-repeat="month in months" ng-value="$index">{{ month }}</md-option>
+						<md-option ng-repeat="month in months" ng-value="$index + 1">{{ month }}</md-option>
 					</md-select>
 				</md-input-container>
 
@@ -58,7 +58,7 @@
 				<md-input-container class="md-block" flex-gt-sm>
 					<label>State</label>
 					<md-select ng-model="user.address.state">
-						<md-option ng-repeat="state in states" ng-value="state">{{state}}</md-option>
+						<md-option ng-repeat="state in states" ng-value="state">{{ state }}</md-option>
 					</md-select>
 				</md-input-container>
 

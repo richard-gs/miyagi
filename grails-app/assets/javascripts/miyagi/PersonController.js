@@ -25,7 +25,7 @@ let DialogController = function($scope, $mdDialog) {
 let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 	$scope.people = [];
 	$scope.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-	$scope.monthFreq = [0,0,0,0,0,0,0,0,0,0,0,0];
+	$scope.monthFreq = [];
 
 	function showToast(message) {
 		$mdToast.show(
@@ -68,12 +68,17 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 	}
 
 	function countMonths() { // dob months frequencies
+		resetMonthFreq();
 		for (let person of $scope.people) {
 			console.log(person.dob, person.dob.constructor.name);
 			let date = new Date(Date.parse(person.dob));
 			let monthIndex = date.getMonth();
 			$scope.monthFreq[monthIndex]++;
 		}
+	}
+
+	function resetMonthFreq() {
+		$scope.monthFreq = [0,0,0,0,0,0,0,0,0,0,0,0];
 	}
 
 	loadPeople();
