@@ -27,6 +27,9 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 	$scope.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	$scope.monthFreq = [];
 
+	const GS_HQ_LAT =  38.9049526;
+	const GS_HQ_LON = -77.0395802;
+
 	function showToast(message) {
 		$mdToast.show(
 			$mdToast.simple()
@@ -60,6 +63,7 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 			.then(response => {
 				$scope.people = response.data;
 				countMonths();
+				calcDistances($scope.people);
 				console.log(response);
 			}, () => {
 				console.error(response);
@@ -107,8 +111,63 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 		loadPeople();
 	}
 
+	// https://cloud.google.com/blog/products/maps-platform/how-calculate-distances-map-maps-javascript-api
+	function haversine_distance(a_lat, a_lon, b_lat, b_lon) {
+		var R = 3958.8; // Radius of the Earth in miles
+		var rlat1 = a_lat * (Math.PI/180); // Convert degrees to radians
+		var rlat2 = b_lat * (Math.PI/180); // Convert degrees to radians
+		var difflat = rlat2-rlat1; // Radian difference (latitudes)
+		var difflon = (a_lon - b_lon) * (Math.PI/180); // Radian difference (longitudes)
+  
+		var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+		return d;
+	}
+
 	loadPeople();
+
+	function googleMapsApi(address, callback) {
+		console.log(" === CALLING GOOGLE MAPS API === ");
+		$http.get('https://maps.googleapis.com/maps/api/geocode/json', {
+			params: {
+				address: address, // 1725 Desales St NW, Washington, DC 20036
+				key:     'AIzaSyC-l4UBX-MMfp7gXYGIHDT0kXhPu7nk0-0'
+			}
+		}).then(response => {
+			console.log(response);
+			console.log(response.data.results[0].geometry.location);
+			callback(response);
+		}, () => {
+			console.error(response);
+		});
+	}
+
+	function calcDistances(people) {
+		console.log('calc distances people:', people);
+		for (let person of people) {
+			console.log('CALC DISTANCE FOR:', person);
+			let address = `${person.street}, ${person.city}, ${person.state} ${person.zip}`;
+			if (hardcoded(person, address)) { continue; }
+			googleMapsApi(address, (response) => {
+				person.lat = response.data.results[0].geometry.location.lat;
+				person.lon = response.data.results[0].geometry.location.lng;
+				person.dist = haversine_distance(GS_HQ_LAT, GS_HQ_LON, person.lat, person.lon);
+			});
+		}
+	}
+
+	// hardcoded distances to limit number of google maps api calls
+	function hardcoded(person, address) {
+		console.log('hardcoded');
+		if (address === '1600 Pennsylvania Avenue NW, Washington, DC 20500') {
+			person.lat  =  38.8976633;
+			person.lon  = -77.0365739
+			person.dist = haversine_distance(GS_HQ_LAT, GS_HQ_LON, person.lat, person.lon);
+			return true;
+		}
+		return false;
+	}
 }
+
 
 angular.module('miyagiApp').controller('PersonController', PersonController);
 

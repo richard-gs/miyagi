@@ -64,7 +64,7 @@
 				<td>Zip</td>
 				<td>Lat</td>
 				<td>Lon</td>
-				<td>Distance to Goodshuffle</td>
+				<td>Distance to Goodshuffle HQ</td>
 			</tr>
 			<tr ng-repeat="person in people" ng-show="people.length > 0">
 				<td>{{ person.firstName }}</td>
@@ -74,9 +74,9 @@
 				<td>{{ person.city }}</td>
 				<td>{{ person.state }}</td>
 				<td>{{ person.zip }}</td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td>{{ person.lat }}</td>
+				<td>{{ person.lon }}</td>
+				<td>{{ person.dist | number:2 }} {{ person.dist ? 'mi' : '' }}</td>
 			</tr>
 			<tr ng-show="people.length <= 0" class="message">
 				<td colspan="10" class="message" style="text-align: center;">no people to display</td>
