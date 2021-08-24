@@ -27,6 +27,7 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 	$scope.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	$scope.monthFreq = [];
 
+	// 1725 Desales St NW, Washington, DC 20036
 	const GS_HQ_LAT =  38.9049526;
 	const GS_HQ_LON = -77.0395802;
 
@@ -126,11 +127,12 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 	loadPeople();
 
 	function googleMapsApi(address, callback) {
+		const GOOGLE_MAPS_API_KEY = 'AIzaSyC-l4UBX-MMfp7gXYGIHDT0kXhPu7nk0-0';
 		console.log(" === CALLING GOOGLE MAPS API === ");
 		$http.get('https://maps.googleapis.com/maps/api/geocode/json', {
 			params: {
-				address: address, // 1725 Desales St NW, Washington, DC 20036
-				key:     'AIzaSyC-l4UBX-MMfp7gXYGIHDT0kXhPu7nk0-0'
+				address: address,
+				key:     GOOGLE_MAPS_API_KEY
 			}
 		}).then(response => {
 			console.log(response);
