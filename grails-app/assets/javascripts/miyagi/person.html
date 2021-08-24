@@ -45,13 +45,13 @@
 						<h3>Metrics</h3>
 						<table style="margin: auto; background-color: white;">
 							<tr>
-								<td ng-class="{'red-h': freq > 0, 'green-h': freq > 1}"
+								<td ng-class="{'red-h': freq > 3, 'green-h': freq > 6}"
 								    ng-repeat="freq in monthFreq track by $index">
 									{{ freq }}
 								</td>
 							</tr>
 							<tr>
-								<td bold ng-repeat="month in months">{{ month }}</td>
+								<td theme bold ng-repeat="month in months">{{ month }}</td>
 							</tr>
 						</table>
 					</div>
