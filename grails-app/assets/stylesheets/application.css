@@ -33,3 +33,19 @@ td {
     color: #666;
     padding: 5px 5px 5px 5px;
 }
+
+.red-h {
+    color: red;
+    background-color: #fee;
+    font-weight: bold;
+}
+
+.green-h {
+    color: green;
+    background-color: #efe;
+    font-weight: bold;
+}
+
+[bold] {
+    font-weight: bold;
+}

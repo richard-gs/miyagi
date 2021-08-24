@@ -43,12 +43,15 @@
 				<td colspan="10" style="background-color: #e2e5f5;">
 					<div style="text-align: center;">
 						<h3>Metrics</h3>
-						<table style="margin: auto;">
+						<table style="margin: auto; background-color: white;">
 							<tr>
-								<td ng-repeat="freq in monthFreq track by $index">{{ freq }}</td>
+								<td ng-class="{'red-h': freq > 0, 'green-h': freq > 1}"
+								    ng-repeat="freq in monthFreq track by $index">
+									{{ freq }}
+								</td>
 							</tr>
 							<tr>
-								<td ng-repeat="month in months">{{ month }}</td>
+								<td bold ng-repeat="month in months">{{ month }}</td>
 							</tr>
 						</table>
 					</div>
