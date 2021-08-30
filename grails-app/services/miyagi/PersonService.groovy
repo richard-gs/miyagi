@@ -50,8 +50,9 @@ class PersonService {
 
 
     def delete(personId) {
-        def p = Person.get(personId)
+        Person p = Person.where{ id == personId }.join('address').find()
         p.delete()
+        p.address.delete()
         return p
     }
 

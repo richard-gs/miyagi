@@ -4,7 +4,6 @@ import grails.databinding.BindingFormat
 import groovy.transform.ToString
 
 // select * from person p full join address a on a.person_id=p.id;
-// @ToString(includeNames=true)
 class Person {
     String firstName
     String lastName
@@ -30,10 +29,12 @@ class Person {
 
     def toObj() {
         def obj = [
+            id:        id,
             firstName: firstName,
             lastName:  lastName,
             dob:       dob.format('yyyy-MM-dd'),
             address: [
+                id:     address.id,
                 street: address.street,
                 city:   address.city,
                 state:  address.state,

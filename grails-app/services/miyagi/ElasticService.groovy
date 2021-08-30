@@ -11,7 +11,6 @@ import net.sf.json.util.CycleDetectionStrategy
 class ElasticService {
 
     def elastic(method, url, reqBody) {
-        log.info "reqBody: ${reqBody.toString()}"
         def http = new HTTPBuilder(url)
         http.request(method, ContentType.JSON) { req ->
             body = reqBody
