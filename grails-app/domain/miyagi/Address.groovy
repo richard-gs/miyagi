@@ -9,8 +9,6 @@ class Address {
     String state
     String zip
 
-    static belongsTo = [person:Person]
-
     static constraints = {
         street blank: false
         city blank: false

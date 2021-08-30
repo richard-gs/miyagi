@@ -1,49 +1,35 @@
 package miyagi
 
-import grails.rest.*
-import grails.converters.*
-import org.hibernate.FetchMode
-
 class PersonController {
-    static responseFormats = ['json']
 
-    def personToResponse(Person p) {
-        if (!p) { return }
-        def person = [
-            id:        p.id,
-            firstName: p.firstName,
-            lastName:  p.lastName,
-            dob:       p.dob,
-        ]
-        if (p.address) {
-            person.street = p.address.street;
-            person.city   = p.address.city;
-            person.state  = p.address.state;
-            person.zip    = p.address.zip;
-        }
-        return person
-    }
+    def personService
+    def elasticService
 
+    /**
+     * Test with: curl "localhost:8080/person"
+     */
     def index() {
-        def response = []
-
-        Person.list().each { p ->
-            def person = personToResponse(p)
-            response.push(person)
-        }
+        log.info "Index"
         
-        respond(response) // http://docs.grails.org/3.3.11/guide/single.html#jsonResponses
+        def elasticData = elasticService.getAllPeople()
+        log.info "elasticData: ${elasticData.toString()}"
+
+        def dbPeople = personService.getAllIncludeAddress()
+
+        respond(dbPeople) // http://docs.grails.org/3.3.11/guide/single.html#jsonResponses
     }
 
+    /**
+     * Test with: curl "localhost:8080/person/123"
+     */
     def show() {
-        Person p = Person.get(params.id)
-        def response = personToResponse(p)
-        respond(response)
+        log.info "Show"
+        respond personService.getById(params.id)
     }
 
     /**
      * http://docs.grails.org/3.3.11/guide/theWebLayer.html#commandObjects >> "Binding The Request Body To Command Objects"
-     *
+     * 
      * Test with (sad):
      * curl -i -X POST -H "Content-Type: application/json" -d '{"name":"asdf", "firstName":"first!"}' localhost:8080/person
      *
@@ -51,76 +37,47 @@ class PersonController {
      * curl -i -X POST -H "Content-Type: application/json" -d '{"firstName":"another", "lastName":"person", "dob":"1993-03-24", "address": {"street":"123 fake st", "city":"anytown", "state":"md", "zip":"12345"}}' localhost:8080/person
      */
     def save(Person p) {
-        log.info p.toString()
-        saveUpdate(p)
+        log.info "Save"
+
+        def dbResponse = personService.save(p)
+        if (dbResponse == 400) {
+            response.sendError(400) // https://stackoverflow.com/questions/1429388/how-can-i-return-a-404-50x-status-code-from-a-grails-controller
+        }
+        elasticService.savePerson(p)
+
+        respond(['ok': dbResponse])
     }
 
     /**
-     * Test with:
-     * curl -i -X PUT -H "Content-Type: application/json" -d '{"name":"asdf"}' localhost:8080/person/6
+     * Test with: curl -i -X PUT -H "Content-Type: application/json" -d '{"name":"asdf"}' localhost:8080/person/6
      */
     def update(Person newPerson) {
-        Person existingPerson = Person.get(params.id)
-        if (!existingPerson) {
-            return response.sendError(404) 
-        }
-        existingPerson.properties = newPerson.properties
-        saveUpdate(existingPerson)
+        log.info "Update"
+
+        def dbResponse = personService.update(params.id, newPerson)
+
+        respond(['ok': dbResponse])
     }
 
-    def saveUpdate(Person p) {
-        // https://docs.grails.org/3.3.11/guide/validation.html#validatingConstraints
-        // https://docs.grails.org/3.3.11/ref/Domain%20Classes/save.html (auto validates on save)
-        try {
-            p.save(flush: true, failOnError: true)
-            respond(['ok': p])
-        } catch(grails.validation.ValidationException e) {
-            log.error e.toString()
-            response.sendError(400) // https://stackoverflow.com/questions/1429388/how-can-i-return-a-404-50x-status-code-from-a-grails-controller
-        }
-    }
-
+    /**
+     * Test with: curl -XDELETE "localhost:8080/person/123"
+     */
     def delete() {
-        def p = Person.get(params.id)
-        p.delete(flush: true)
-        respond(p)
+        log.info "Delete"
+        respond( personService.delete(params.id) )
     }
 
     /**
      * Test with: curl "localhost:8080/person/search?name=james"
      */
     def search() {
-        if (!params.name?.trim()) {
-            params.name = "%"
-        }
-        if (!params.startDate?.trim()) {
-            Calendar cal = Calendar.getInstance(); 
-            cal.set(1, 1, 1);                      
-            params.startDate = cal.getTime();      
-        } else {
-            params.startDate = Date.parse("yyyy-MM-dd", params.startDate)
-        }
-        if (!params.endDate?.trim()) {
-            Calendar cal = Calendar.getInstance(); 
-            cal.set(3000, 1, 1);                   
-            params.endDate = cal.getTime();        
-        } else {
-            params.endDate = Date.parse("yyyy-MM-dd", params.endDate)
-        }
+        log.info "Search"
 
-        def results = Person.createCriteria().list {
-            or {
-                ilike("firstName", "%$params.name%")
-                ilike("lastName", "%$params.name%")
-            }
-            between("dob", params.startDate, params.endDate)
-        }
-
-        def response = []
-        results.each { p ->
-            def person = personToResponse(p)
-            response.push(person)
-        }
+        def response = personService.search(
+            params.name,
+            params.startDate,
+            params.endDate
+        )
         respond(response)
     }
 }

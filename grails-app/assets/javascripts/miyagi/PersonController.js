@@ -124,10 +124,8 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 		return d;
 	}
 
-	loadPeople();
-
 	function googleMapsApi(address, callback) {
-		const GOOGLE_MAPS_API_KEY = 'AIzaSyC-l4UBX-MMfp7gXYGIHDT0kXhPu7nk0-0';
+		const GOOGLE_MAPS_API_KEY = 'AIzaSyCOiSlF5NaJj4UuMhb3hmncLWX3GwLN-tY';
 		console.log(" === CALLING GOOGLE MAPS API === ");
 		$http.get('https://maps.googleapis.com/maps/api/geocode/json', {
 			params: {
@@ -147,9 +145,11 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 		console.log('calc distances people:', people);
 		for (let person of people) {
 			console.log('CALC DISTANCE FOR:', person);
-			let address = `${person.street}, ${person.city}, ${person.state} ${person.zip}`;
-			if (hardcoded(person, address)) { continue; }
-			googleMapsApi(address, (response) => {
+			let addr = person.address;
+			let addressStr = `${addr.street}, ${addr.city}, ${addr.state} ${addr.zip}`;
+			console.log('address', addressStr)
+			if (hardcoded(person, addressStr)) { continue; }
+			googleMapsApi(addressStr, (response) => {
 				person.lat = response.data.results[0].geometry.location.lat;
 				person.lon = response.data.results[0].geometry.location.lng;
 				person.dist = haversine_distance(GS_HQ_LAT, GS_HQ_LON, person.lat, person.lon);
@@ -159,8 +159,8 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 
 	// hardcoded distances to limit number of google maps api calls
 	function hardcoded(person, address) {
-		console.log('hardcoded');
 		if (address === '1600 Pennsylvania Avenue NW, Washington, DC 20500') {
+			console.log('hardcoded');
 			person.lat  =  38.8976633;
 			person.lon  = -77.0365739
 			person.dist = haversine_distance(GS_HQ_LAT, GS_HQ_LON, person.lat, person.lon);
@@ -168,6 +168,8 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 		}
 		return false;
 	}
+
+	loadPeople();
 }
 
 

@@ -70,10 +70,10 @@
 				<td>{{ person.firstName }}</td>
 				<td>{{ person.lastName }}</td>
 				<td>{{ person.dob | date }}</td>
-				<td>{{ person.street }}</td>
-				<td>{{ person.city }}</td>
-				<td>{{ person.state }}</td>
-				<td>{{ person.zip }}</td>
+				<td>{{ person.address.street }}</td>
+				<td>{{ person.address.city }}</td>
+				<td>{{ person.address.state }}</td>
+				<td>{{ person.address.zip }}</td>
 				<td>{{ person.lat }}</td>
 				<td>{{ person.lon }}</td>
 				<td>{{ person.dist | number:2 }} {{ person.dist ? 'mi' : '' }}</td>

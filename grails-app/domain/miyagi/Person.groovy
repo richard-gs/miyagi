@@ -12,13 +12,39 @@ class Person {
     @BindingFormat('yyyy-MM-dd')
     Date dob
 
-    // http://gorm.grails.org/6.1.x/hibernate/manual/#domainClasses
-    static hasOne = [address:Address]
+    Address address // http://gorm.grails.org/6.1.x/hibernate/manual/#domainClasses
 
     // http://docs.grails.org/3.3.11/guide/single.html#validation
     static constraints = {
         firstName blank: false
         lastName blank: false
         dob blank: false
+        address nullable: true
+    }
+
+    // @ToString implementation is garbo and causes a stack overflow
+    @Override
+    public String toString() {
+        return "${firstName}|${lastName}|${dob}|${address?.street}|${address?.city}|${address?.state}|${address?.zip}"
+    }
+
+    def toObj() {
+        def obj = [
+            firstName: firstName,
+            lastName:  lastName,
+            dob:       dob.format('yyyy-MM-dd'),
+            address: [
+                street: address.street,
+                city:   address.city,
+                state:  address.state,
+                zip:    address.zip,
+            ]
+        ]
+    }
+
+    static def toObj(List<Person> people) {
+        return people.collect {
+            person -> person.toObj()
+        }
     }
 }
