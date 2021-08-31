@@ -70,8 +70,8 @@
 				<td>Distance to Goodshuffle HQ</td>
 			</tr>
 			<tr ng-repeat="person in people" ng-show="people.length > 0">
-				<td>{{ person.firstName }}</td>
-				<td>{{ person.lastName }}</td>
+				<td><a class="blue" href ng-click="panel($event)">{{ person.firstName }}</a></td>
+				<td><a class="blue" href ng-click="panel($event)">{{ person.lastName }}</a></td>
 				<td>{{ person.dob | date }}</td>
 				<td>{{ person.address.street }}</td>
 				<td>{{ person.address.city }}</td>

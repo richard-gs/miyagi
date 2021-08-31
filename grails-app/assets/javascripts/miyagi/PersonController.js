@@ -40,7 +40,11 @@ let DialogController = function($scope, $mdDialog) {
 	}
 }
 
-let PersonController = function($scope, $mdDialog, $mdToast, $http) {
+// let PanelController = function($scope, $mdPanel, $window) {
+
+// }
+
+let PersonController = function($scope, $mdDialog, $mdToast, $mdPanel, $http, $window) {
 	$scope.people = [];
 	$scope.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	$scope.monthFreq = [];
@@ -55,6 +59,34 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 				.textContent(message)
 				.hideDelay(3000)
 		);
+	}
+
+	$scope.panel = function($event) {
+		console.log("sup");
+		let panelPosition = $mdPanel.newPanelPosition()
+			.absolute()
+			.top('0%')
+			.right('0%');
+
+		let panelAnimation = $mdPanel.newPanelAnimation()
+			.openFrom({ top: 0, left: $window.innerWidth })
+			.duration(50)
+			.withAnimation($mdPanel.animation.SLIDE);
+		
+		$mdPanel.open({
+			attachTo: angular.element(document.body),
+			controller: PersonController,
+			// controllerAs: 'ctrl',
+			position: panelPosition,
+			animation: panelAnimation,
+			targetEvent: $event,
+			templateUrl: 'assets/miyagi/personPanel.html',
+			clickOutsideToClose: true,
+			escapeToClose: true,
+			focusOnOpen: true
+		}).then(result => {
+			// panelRef = result;
+		});
 	}
 	
 	$scope.addPerson = function(event) {
