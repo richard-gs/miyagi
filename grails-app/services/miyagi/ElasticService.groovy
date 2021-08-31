@@ -10,8 +10,6 @@ import net.sf.json.util.CycleDetectionStrategy
 
 class ElasticService {
 
-    def utilService
-
     def elastic(method, url, reqBody) {
         def http = new HTTPBuilder(url)
         http.request(method, ContentType.JSON) { req ->
@@ -46,11 +44,7 @@ class ElasticService {
     }
 
     def search(name, startDate, endDate) {
-
-        log.info "wow ElasticService.search(${name}, ${startDate}, ${endDate})"
-
-        // (name, startDate, endDate) = utilService.normalizeInputs(
-        //     name, startDate, endDate)
+        log.info "ElasticService.search(${name}, ${startDate}, ${endDate})"
 
         def nameQuery = [
             bool: [
@@ -75,13 +69,17 @@ class ElasticService {
                 ]
             ] 
         ]
+
+        def queries = [dateQuery]
+
+        if (name?.trim()) {
+            queries.add(nameQuery)
+        }
+
         def searchObj = [
             query: [
                 bool: [
-                    must: [
-                        nameQuery,
-                        dateQuery
-                    ]
+                    must: queries
                 ]
             ]
         ]
@@ -93,6 +91,7 @@ class ElasticService {
             'http://localhost:9200/people/_search', 
             searchObj
         )
+        log.info results.toString()
 
         return restructureResults(results)
     }

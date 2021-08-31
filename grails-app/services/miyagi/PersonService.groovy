@@ -77,8 +77,6 @@ class PersonService {
         } else {
             endDate = Date.parse("yyyy-MM-dd", endDate)
         }
-        // (name, startDate, endDate) = utilService.normalizeInputs(
-        //     name, startDate, endDate)
 
         def people = Person.createCriteria().list {
             or {

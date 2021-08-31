@@ -84,7 +84,11 @@ class PersonController {
     def elasticSearch() {
         log.info "Elastic Search"
         respond(
-            elasticService.search("James", "1700-01-01", "1800-01-01")
+            elasticService.search(
+                params.name,
+                params.startDate,
+                params.endDate
+            )
         )
     }
 }
