@@ -4,9 +4,25 @@ let DialogController = function($scope, $mdDialog) {
 	$scope.states = ['AL','AK','AZ','AR','CA','CO','CT','DC','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','PR','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
 	$scope.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	$scope.days = getDays();
+	$scope.showAlert = false;
 
 	$scope.hide = function() {
-		$mdDialog.hide($scope.user);
+		$scope.showAlert = 
+			!$scope.user ||
+			!$scope.user.firstName || 
+			!$scope.user.lastName || 
+			!$scope.user.month || 
+			!$scope.user.day || 
+			!$scope.user.year || 
+			!$scope.user.address || 
+			!$scope.user.address.street || 
+			!$scope.user.address.city ||
+			!$scope.user.address.state || 
+			!$scope.user.address.zip;
+
+		if (!$scope.showAlert) {
+			$mdDialog.hide($scope.user);
+		}
 	};
 	
 	$scope.cancel = function() {
@@ -48,27 +64,31 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 		}).then(person => {
 			console.log('Submitted Person:', person);
 			person.dob = `${person.year}-${person.month}-${person.day}`;
-			$http.post('person', person)
-			.then(response => {
+			$http.post(
+				'person', person
+			).then(() => {
 				showToast('Successfully added person!');
 				loadPeople();
-			}, () => {
+			}).catch(error => {
 				showToast('Failed to add person.');
-				console.error(response);
-			});
-		});
+				console.error(error);
+			}); 
+		}).catch(err => {
+			console.error("Modal Closed", err);
+		})
 	};
 
 	function loadPeople() {
-		$http.get('person')
-			.then(response => {
-				$scope.people = response.data;
-				countMonths();
-				calcDistances($scope.people);
-				console.log(response);
-			}, () => {
-				console.error(response);
-			});
+		$http.get(
+			'person'
+		).then(response => {
+			$scope.people = response.data;
+			countMonths();
+			calcDistances($scope.people);
+			console.log(response);
+		}).catch(error => {
+			console.error(error);
+		});
 	}
 
 	function countMonths() { // dob months frequencies
@@ -95,8 +115,8 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 		}).then(response => {
 			$scope.people = response.data;
 			console.log(response);
-		}, () => {
-			console.error(response);
+		}).catch(error => {
+			console.error(error);
 		});
 	}
 
@@ -136,8 +156,8 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 			console.log(response);
 			console.log(response.data.results[0].geometry.location);
 			callback(response);
-		}, () => {
-			console.error(response);
+		}).catch(error => {
+			console.error(error);
 		});
 	}
 
@@ -171,7 +191,6 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 
 	loadPeople();
 }
-
 
 angular.module('miyagiApp').controller('PersonController', PersonController);
 
