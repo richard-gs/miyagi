@@ -12,6 +12,9 @@ import net.sf.json.util.CycleDetectionStrategy
 
 @Transactional
 class PersonService {
+
+    def utilService
+
     def getAllIncludeAddress() {
         def people = Person.where{}.join('address').list()
         return Person.toObj(people)
@@ -56,7 +59,6 @@ class PersonService {
         return p
     }
 
-
     def search(name, startDate, endDate) {
         if (!name?.trim()) {
             name = "%"
@@ -75,6 +77,8 @@ class PersonService {
         } else {
             endDate = Date.parse("yyyy-MM-dd", endDate)
         }
+        // (name, startDate, endDate) = utilService.normalizeInputs(
+        //     name, startDate, endDate)
 
         def people = Person.createCriteria().list {
             or {

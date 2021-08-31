@@ -80,6 +80,13 @@ class PersonController {
         )
         respond(response)
     }
+
+    def elasticSearch() {
+        log.info "Elastic Search"
+        respond(
+            elasticService.search("James", "1700-01-01", "1800-01-01")
+        )
+    }
 }
 
 // http://docs.grails.org/3.3.11/guide/theWebLayer.html#dataBinding >> "Binding Request Data to the Model"

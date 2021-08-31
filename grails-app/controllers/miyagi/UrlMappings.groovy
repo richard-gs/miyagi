@@ -12,6 +12,7 @@ class UrlMappings {
         patch  "/$controller/$id(.$format)?"(action:"patch")
 
         get    "/$controller/search"(action:"search")
+        get    "/$controller/elasticSearch"(action:"elasticSearch")
 
         "/"(view: '/index')
         "500"(view: '/error')
