@@ -10,13 +10,7 @@ class PersonController {
      */
     def index() {
         log.info "Index"
-        
-        def elasticData = elasticService.getAllPeople()
-        log.info "elasticData: ${elasticData.toString()}"
-
-        def dbPeople = personService.getAllIncludeAddress()
-
-        respond(dbPeople) // http://docs.grails.org/3.3.11/guide/single.html#jsonResponses
+        respond( personService.getAllIncludeAddress() ) // http://docs.grails.org/3.3.11/guide/single.html#jsonResponses
     }
 
     /**
@@ -24,7 +18,7 @@ class PersonController {
      */
     def show() {
         log.info "Show"
-        respond personService.getById(params.id)
+        respond( personService.getById(params.id) )
     }
 
     /**
@@ -45,7 +39,7 @@ class PersonController {
         }
         elasticService.savePerson(p)
 
-        respond(['ok': dbResponse])
+        respond( ['ok': dbResponse] )
     }
 
     /**
@@ -56,7 +50,7 @@ class PersonController {
 
         def dbResponse = personService.update(params.id, newPerson)
 
-        respond(['ok': dbResponse])
+        respond( ['ok': dbResponse] )
     }
 
     /**
@@ -81,8 +75,12 @@ class PersonController {
         respond(response)
     }
 
+    /**
+     * Test with: curl "localhost:8080/person/elasticSearch?name=james&startDate=1800-01-01"
+     */
     def elasticSearch() {
         log.info "Elastic Search"
+        
         respond(
             elasticService.search(
                 params.name,

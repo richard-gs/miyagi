@@ -60,6 +60,8 @@ class PersonService {
     }
 
     def search(name, startDate, endDate) {
+        log.info "PersonService.search(${name}, ${startDate}, ${endDate})"
+
         if (!name?.trim()) {
             name = "%"
         }
@@ -78,6 +80,8 @@ class PersonService {
             endDate = Date.parse("yyyy-MM-dd", endDate)
         }
 
+        log.info "Normalized: ${name}, ${startDate}, ${endDate}"
+
         def people = Person.createCriteria().list {
             or {
                 ilike("firstName", "%$name%")
@@ -85,6 +89,8 @@ class PersonService {
             }
             between("dob", startDate, endDate)
         }
+
+        log.info people.toString()
 
         return Person.toObj(people)
     }

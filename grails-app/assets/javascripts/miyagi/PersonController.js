@@ -122,6 +122,21 @@ let PersonController = function($scope, $mdDialog, $mdToast, $http) {
 		});
 	}
 
+	$scope.elasticSearch = function() {
+		$http.get('person/elasticSearch', {
+			params: {
+				name:      $scope.filter.name,
+				startDate: jsDateToShortDate($scope.filter.startDate),
+				endDate:   jsDateToShortDate($scope.filter.endDate)
+			}
+		}).then(response => {
+			$scope.people = response.data;
+			console.log(response);
+		}).catch(error => {
+			console.error(error);
+		});
+	}
+
 	function jsDateToShortDate(d) {
 		if (!d) { return d; }
 		return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`

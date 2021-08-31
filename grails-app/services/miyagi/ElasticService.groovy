@@ -16,8 +16,7 @@ class ElasticService {
             body = reqBody
             response.success = { resp, data -> data }
             response.failure = { resp, data ->
-                log.info 'FAILED'
-                log.info resp.toString()
+                log.info "FAILED ${method} ${url} ${reqBody}"
                 log.info data.toString()
             }
         }
@@ -45,6 +44,14 @@ class ElasticService {
 
     def search(name, startDate, endDate) {
         log.info "ElasticService.search(${name}, ${startDate}, ${endDate})"
+
+        // Why does this work?
+        if (!startDate?.trim()) {
+            startDate = null
+        }
+        if (!endDate?.trim()) {
+            endDate = null
+        }
 
         def nameQuery = [
             bool: [
