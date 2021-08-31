@@ -4,24 +4,26 @@ let DialogController = function($scope, $mdDialog) {
 	$scope.states = ['AL','AK','AZ','AR','CA','CO','CT','DC','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','PR','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
 	$scope.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	$scope.days = getDays();
-	$scope.showAlert = false;
+	$scope.alertText = false;
 
 	$scope.hide = function() {
-		$scope.showAlert = 
-			!$scope.user ||
-			!$scope.user.firstName || 
-			!$scope.user.lastName || 
-			!$scope.user.month || 
-			!$scope.user.day || 
-			!$scope.user.year || 
-			!$scope.user.address || 
-			!$scope.user.address.street || 
-			!$scope.user.address.city ||
-			!$scope.user.address.state || 
-			!$scope.user.address.zip;
+		$scope.alertText = 
+			   !$scope.user                // || $scope.user.$invalid
+			|| !$scope.user.firstName      // || $scope.user.firstName.$invalid
+			|| !$scope.user.lastName       // || $scope.user.lastName.$invalid
+			|| !$scope.user.month          // || $scope.user.month.$invalid
+			|| !$scope.user.day            // || $scope.user.day.$invalid
+			|| !$scope.user.year           // || $scope.user.year.$invalid
+			|| !$scope.user.address        // || $scope.user.address.$invalid
+			|| !$scope.user.address.street // || $scope.user.address.street.$invalid
+			|| !$scope.user.address.city   // || $scope.user.address.city.$invalid
+			|| !$scope.user.address.state  // || $scope.user.address.state.$invalid
+			|| !$scope.user.address.zip    // || $scope.user.address.zip.$invalid;
 
-		if (!$scope.showAlert) {
+		if (!$scope.alertText) {
 			$mdDialog.hide($scope.user);
+		} else {
+			$scope.alertText = "Please verify all fields are filled out correctly.";
 		}
 	};
 	

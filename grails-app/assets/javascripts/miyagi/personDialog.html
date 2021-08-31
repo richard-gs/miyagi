@@ -12,57 +12,57 @@
 		<div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm>
 				<label>First name</label>
-				<input ng-model="user.firstName">
+				<input ng-model="user.firstName" required>
 			</md-input-container>
 
 			<md-input-container class="md-block" flex-gt-sm>
 				<label>Last Name</label>
-				<input ng-model="user.lastName">
+				<input ng-model="user.lastName" required>
 			</md-input-container>
 		</div>
 
 		<div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm>
 				<label>Month</label>
-				<md-select ng-model="user.month">
+				<md-select ng-model="user.month" required>
 					<md-option ng-repeat="month in months" ng-value="$index + 1">{{ month }}</md-option>
 				</md-select>
 			</md-input-container>
 
 			<md-input-container class="md-block" flex-gt-sm>
 				<label>Day</label>
-				<md-select ng-model="user.day">
+				<md-select ng-model="user.day" required>
 					<md-option ng-repeat="day in days" ng-value="day">{{ day }}</md-option>
 				</md-select>
 			</md-input-container>
 
 			<md-input-container class="md-block" flex-gt-sm>
 				<label>Year</label>
-				<input ng-model="user.year">
+				<input ng-model="user.year" required ng-pattern="/^[0-9]{4}$/" md-maxlength="4">
 			</md-input-container>
 		</div>
 
 		<md-input-container class="md-block">
 			<label>Address</label>
-			<input ng-model="user.address.street">
+			<input ng-model="user.address.street" required>
 		</md-input-container>
 
 		<div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm>
 				<label>City</label>
-				<input ng-model="user.address.city">
+				<input ng-model="user.address.city" required>
 			</md-input-container>
 
 			<md-input-container class="md-block" flex-gt-sm>
 				<label>State</label>
-				<md-select ng-model="user.address.state">
+				<md-select ng-model="user.address.state" required>
 					<md-option ng-repeat="state in states" ng-value="state">{{ state }}</md-option>
 				</md-select>
 			</md-input-container>
 
 			<md-input-container class="md-block" flex-gt-sm>
 				<label>Zip Code</label>
-				<input name="zipCode" ng-model="user.address.zip" placeholder="12345"
+				<input name="zipCode" ng-model="user.address.zip"
 					required ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
 
 				<!-- <div ng-messages="userForm.postalCode.$error" role="alert" multiple>
@@ -79,7 +79,7 @@
 	</md-dialog-content>
 
 	<md-dialog-actions layout="row">
-		<div red ng-show="showAlert">Please fill out all fields</div>
+		<div red ng-show="alertText">{{ alertText }}</div>
 		<span flex></span>
 		<md-button ng-click="cancel()">
 			Cancel
