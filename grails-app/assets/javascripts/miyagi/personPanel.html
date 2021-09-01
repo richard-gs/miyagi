@@ -4,31 +4,19 @@
 			<h2>Details</h2>
 		</div>
 	</md-toolbar>
-	<md-dialog-content layout-padding>
+	<md-dialog-content layout-padding style="text-align: center;">
+		<!-- <div layout-gt-sm="row" layout-align="center"> -->
+			<div>{{ person.firstName }} {{ person.lastName }}</div>
+			<div>{{ person.address.street }}</div>
+			<div>{{ person.address.city }}, {{ person.address.state }} {{ person.address.zip }}</div>
+		<!-- </div> -->
 		<div layout-gt-sm="row" layout-align="center">
-			<md-input-container class="md-block" flex="85">
-				<label>Name</label>
-				<input ng-model="filter.name">
-			</md-input-container>
+			<!-- <img src="https://maps.googleapis.com/maps/api/staticmap?center={{person.lat}},{{person.lon}}&zoom=15&size=400x400&key=AIzaSyCOiSlF5NaJj4UuMhb3hmncLWX3GwLN-tY"/> -->
+			<img src="https://maps.googleapis.com/maps/api/staticmap?size=400x400&markers={{person.lat}},{{person.lon}}&key=AIzaSyCOiSlF5NaJj4UuMhb3hmncLWX3GwLN-tY"/>
 		</div>
 		<div layout-gt-sm="row">
-			<md-input-container class="md-block">
-				<md-datepicker ng-model="filter.startDate" md-placeholder="Start Date" md-open-on-focus></md-datepicker>
-			</md-input-container>
-		</div>
-		<div layout-gt-sm="row">
-			<md-input-container class="md-block">
-				<md-datepicker ng-model="filter.endDate" md-placeholder="End Date" md-open-on-focus></md-datepicker>
-			</md-input-container>
+
 		</div>
 	</md-dialog-content>
-
-	<md-dialog-actions layout="row" layout-align="center">
-		<md-button ng-click="reset()">Reset</md-button>
-		<md-button ng-click="search()" md-autofocus>Search</md-button>
-	</md-dialog-actions>
-	<md-dialog-actions layout="row" layout-align="center">
-		<md-button ng-click="elasticSearch()" md-autofocus>Elastic Search</md-button>
-	</md-dialog-actions>
 
 </div>

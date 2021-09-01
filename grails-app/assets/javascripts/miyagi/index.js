@@ -1,5 +1,6 @@
 //= wrapped
 //= require_self
+//= require PersonService
 //= require PersonController
 
 (() => {

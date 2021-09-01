@@ -40,11 +40,25 @@ let DialogController = function($scope, $mdDialog) {
 	}
 }
 
-// let PanelController = function($scope, $mdPanel, $window) {
+let PanelController = function($mdPanel, $rootScope, $scope, $window, PersonService) {
+	$rootScope.$on("Person Selected", (event, person) => {
+		console.log("Person Selected", person)
+		$scope.person = person;
+		console.log("$scope.person", $scope.person)
+	});
+}
 
-// }
+angular.module('miyagiApp').controller('PanelController', [
+	'$mdPanel',
+	'$rootScope',
+	'$scope',
+	'$window',
+	'PersonService',
+	PanelController]);
 
-let PersonController = function($scope, $mdDialog, $mdToast, $mdPanel, $http, $window) {
+
+let PersonController = function(
+		$http, $mdDialog, $mdPanel, $mdToast, $rootScope, $scope, $window, PersonService) {
 	$scope.people = [];
 	$scope.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	$scope.monthFreq = [];
@@ -61,8 +75,8 @@ let PersonController = function($scope, $mdDialog, $mdToast, $mdPanel, $http, $w
 		);
 	}
 
-	$scope.panel = function($event) {
-		console.log("sup");
+	$scope.showPanel = function($event, person) {
+
 		let panelPosition = $mdPanel.newPanelPosition()
 			.absolute()
 			.top('0%')
@@ -75,8 +89,7 @@ let PersonController = function($scope, $mdDialog, $mdToast, $mdPanel, $http, $w
 		
 		$mdPanel.open({
 			attachTo: angular.element(document.body),
-			controller: PersonController,
-			// controllerAs: 'ctrl',
+			controller: PanelController,
 			position: panelPosition,
 			animation: panelAnimation,
 			targetEvent: $event,
@@ -85,7 +98,7 @@ let PersonController = function($scope, $mdDialog, $mdToast, $mdPanel, $http, $w
 			escapeToClose: true,
 			focusOnOpen: true
 		}).then(result => {
-			// panelRef = result;
+			$rootScope.$broadcast("Person Selected", person);
 		});
 	}
 	
@@ -217,6 +230,7 @@ let PersonController = function($scope, $mdDialog, $mdToast, $mdPanel, $http, $w
 			let addr = person.address;
 			let addressStr = `${addr.street}, ${addr.city}, ${addr.state} ${addr.zip}`;
 			console.log('address', addressStr)
+			if (!addressStr) { return; }
 			if (hardcoded(person, addressStr)) { continue; }
 			googleMapsApi(addressStr, (response) => {
 				person.lat = response.data.results[0].geometry.location.lat;
@@ -241,6 +255,15 @@ let PersonController = function($scope, $mdDialog, $mdToast, $mdPanel, $http, $w
 	loadPeople();
 }
 
-angular.module('miyagiApp').controller('PersonController', PersonController);
+angular.module('miyagiApp').controller('PersonController', [
+	'$http',
+	'$mdDialog',
+	'$mdPanel',
+	'$mdToast',
+	'$rootScope',
+	'$scope',
+	'$window',
+	'PersonService',
+	PersonController]);
 
 })();
