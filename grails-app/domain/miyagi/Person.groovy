@@ -43,6 +43,10 @@ class Person {
         ]
     }
 
+    def getAddressString() {
+        return "${address.street}, ${address.city}, ${address.state} ${address.zip},"
+    }
+
     static def toObj(List<Person> people) {
         return people.collect {
             person -> person.toObj()

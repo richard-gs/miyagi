@@ -13,8 +13,6 @@ import net.sf.json.util.CycleDetectionStrategy
 @Transactional
 class PersonService {
 
-    def utilService
-
     def getAllIncludeAddress() {
         def people = Person.where{}.join('address').list()
         return Person.toObj(people)
@@ -25,7 +23,6 @@ class PersonService {
         return Person.where{ id == personId }
             .join('address')
             .find()
-            .toObj()
     }
 
 

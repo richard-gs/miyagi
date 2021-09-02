@@ -40,16 +40,25 @@ let DialogController = function($scope, $mdDialog) {
 	}
 }
 
-let PanelController = function($mdPanel, $rootScope, $scope, $window, PersonService) {
+let PanelController = function($http, $rootScope, $scope, $window, PersonService) {
 	$rootScope.$on("Person Selected", (event, person) => {
 		console.log("Person Selected", person)
 		$scope.person = person;
 		console.log("$scope.person", $scope.person)
+
+		$http.get(
+			`person/${person.id}`
+		).then(response => {
+			console.log("PERSON ID SHOW", response);
+			$scope.person = response.data;
+		}).catch(error => {
+			console.error(error);
+		});
 	});
 }
 
 angular.module('miyagiApp').controller('PanelController', [
-	'$mdPanel',
+	'$http',
 	'$rootScope',
 	'$scope',
 	'$window',
@@ -131,7 +140,7 @@ let PersonController = function(
 		).then(response => {
 			$scope.people = response.data;
 			countMonths();
-			calcDistances($scope.people);
+			// calcDistances($scope.people);
 			console.log(response);
 		}).catch(error => {
 			console.error(error);

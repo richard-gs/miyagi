@@ -4,6 +4,7 @@ class PersonController {
 
     def personService
     def elasticService
+    def googleMapsService
 
     /**
      * Test with: curl "localhost:8080/person"
@@ -18,7 +19,18 @@ class PersonController {
      */
     def show() {
         log.info "Show"
-        respond( personService.getById(params.id) )
+
+        def person = personService.getById(params.id)
+        def location = googleMapsService.geocode(person.getAddressString())
+        log.info location.dump()
+
+        person = person.toObj()
+        person.lat = location.results[0].geometry.location.lat;
+        person.lon = location.results[0].geometry.location.lng;
+
+        log.info person.dump()
+
+        respond(person)
     }
 
     /**
@@ -89,6 +101,7 @@ class PersonController {
             )
         )
     }
+
 }
 
 // http://docs.grails.org/3.3.11/guide/theWebLayer.html#dataBinding >> "Binding Request Data to the Model"
